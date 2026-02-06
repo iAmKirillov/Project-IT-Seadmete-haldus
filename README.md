@@ -18,9 +18,9 @@ Lisaväljaks valiti **inventarinumber**
 Arvutis peaks olema  Python 3.10 või uuem.
 
 Esmalt ava terminal projekti kaustas ning käivita programm käsuga: python main.py 
-Terminali avamine: ![ring.png](../../../Pictures/Screenshots/ring.png)
+Terminali avamine: ![img_1.png](img_1.png)
 
-Programmi käivitamine: ![joon.png](../../../Pictures/Screenshots/joon.png)
+Programmi käivitamine: ![img_2.png](img_2.png)
 
 
 # CSV/JSON salvestus
