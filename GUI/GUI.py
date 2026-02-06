@@ -216,7 +216,7 @@ class DeviceApp:
         """
         Salvestab seadmed CSV-faili.
         """
-        csv_storage = CSVStorage("../devices.csv")
+        csv_storage = CSVStorage("./devices.csv")
         csv_storage.save(self.manager.get_devices_as_dicts())
         messagebox.showinfo("Info", "Andmed salvestatud CSV-faili")
 
@@ -225,7 +225,7 @@ class DeviceApp:
         Laeb seadmed CSV-failist.
         """
         try:
-            csv_storage = CSVStorage("../devices.csv")
+            csv_storage = CSVStorage("./devices.csv")
             devices_data = csv_storage.load()
             self.manager.load_devices_from_dicts(devices_data)
             self.refresh_list()
@@ -237,7 +237,7 @@ class DeviceApp:
         """
         Salvestab seadmed JSON-faili.
         """
-        json_storage = JSONStorage("../devices.json")
+        json_storage = JSONStorage("./devices.json")
         json_storage.save(self.manager.get_devices_as_dicts())
         messagebox.showinfo("Info", "Andmed salvestatud JSON-faili")
 
@@ -246,7 +246,7 @@ class DeviceApp:
         Laeb seadmed JSON-failist.
         """
         try:
-            json_storage = JSONStorage("../devices.json")
+            json_storage = JSONStorage("./devices.json")
             devices_data = json_storage.load()
             self.manager.load_devices_from_dicts(devices_data)
             self.refresh_list()
