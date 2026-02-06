@@ -12,7 +12,6 @@ Kasutaja saab seadmeid **lisada, muuta, kustutada**, ning **salvestada ja laadid
 
 Lisaväljaks valiti **inventarinumber**
 
----
 
 # Kuidas käivitada haldussüsteemi KriSep
 Arvutis peaks olema  Python 3.10 või uuem.
