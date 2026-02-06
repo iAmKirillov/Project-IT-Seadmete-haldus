@@ -3,6 +3,7 @@ CSV andmete salvestamise ja laadimise moodul.
 Kasutab Eesti CSV formaati: semikoolon (;) eraldajana.
 """
 import csv
+from Classes.Device import Device
 
 class CSVStorage: #Klass andmete salvestamiseks ja laadimiseks CSV formaadis.
 

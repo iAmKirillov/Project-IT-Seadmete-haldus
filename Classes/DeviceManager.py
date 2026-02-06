@@ -1,7 +1,7 @@
 """
 Seadmete haldamise klass.
 """
-from .Device import Device
+from Classes import Device
 
 class DeviceManager:
     """
