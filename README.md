@@ -18,6 +18,7 @@ Lisaväljaks valiti **inventarinumber**
 Arvutis peaks olema  Python 3.10 või uuem.
 
 Esmalt ava terminal projekti kaustas ning käivita programm käsuga: python main.py 
+
 Terminali avamine: ![img_1.png](img_1.png)
 
 Programmi käivitamine: ![img_2.png](img_2.png)
