@@ -1,0 +1,68 @@
+"""
+IT-seadme klass.
+"""
+class Device:
+
+    # Siin on nimekiri lubatud seisunditest
+    VALID_STATUSES = ['available', 'in_use', 'broken']
+
+    def __init__(self, name, device_type, status, inventory_number):
+        """
+            name (str): Seadme nimi
+            device_type (str): Seadme tüüp
+            status (str): Seadme seisund
+            inventory_number (str): Inventarinumber
+        """
+        self.name = name
+        self.device_type = device_type
+        self.inventory_number = inventory_number
+
+        # Kontrollime, et seisund oleks lubatud
+        if status not in self.VALID_STATUSES:
+            raise ValueError(f"Vigane seisund '{status}'")
+
+        self.status = status
+
+    def change_status(self, new_status):
+        """
+        Muudab seadme seisundit.
+
+        Argumendid:
+            new_status (str): Uus seisund
+
+        Tõstab:
+            ValueError: Kui uus seisund ei ole lubatud
+        """
+        if new_status not in self.VALID_STATUSES:
+            raise ValueError(
+                f"Vigane seisund '{new_status}'. "
+                f"Lubatud: {', '.join(self.VALID_STATUSES)}"
+            )
+        self.status = new_status
+
+    def to_dict(self):
+        """
+               Teisendab seadme objekti sõnastikuks (dict).
+
+               See on vajalik, et salvestada andmed CSV või JSON faili.
+
+               Tagastab:
+                   dict: Sõnastik seadme andmetega
+               """
+        return {
+            'name': self.name,
+            'device_type': self.device_type,
+            'status': self.status,
+            'inventory_number': self.inventory_number
+        }
+
+    def __str__(self):
+        """
+        Tagastab seadme inimloetava kirjelduse.
+        See meetod käivitub, kui me teeme: print(device)
+        Tagastab:
+            str: Seadme kirjeldus
+        """
+        return (f"{self.name} ({self.device_type}) - "
+                f"Seisund: {self.status}, "
+                f"Inventarinumber: {self.inventory_number}")
