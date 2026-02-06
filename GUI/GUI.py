@@ -12,62 +12,219 @@ class DeviceApp:
     """
 
     def __init__(self, root):
+        """
+        Loob GUI akna ja elemendid.
+        """
         self.root = root
         self.root.title("IT-seadmete haldus")
+        self.root.geometry("620x750")
+        self.root.configure(bg="#f0f0f0")
 
         self.manager = DeviceManager()
 
+        # Pealkiri
+        title_label = tk.Label(
+            root,
+            text="IT-seadmete haldussüsteem",
+            font=("Arial", 18, "bold"),
+            bg="#f0f0f0",
+            fg="#2c3e50"
+        )
+        title_label.grid(row=0, column=0, columnspan=2, pady=20)
+
         # ---- Sisestusväljad ----
-        tk.Label(root, text="Seadme nimi").grid(row=0, column=0, sticky="w")
-        tk.Label(root, text="Seadme tüüp").grid(row=1, column=0, sticky="w")
-        tk.Label(root, text="Seisund").grid(row=2, column=0, sticky="w")
-        tk.Label(root, text="Inventarinumber").grid(row=3, column=0, sticky="w")
+        input_frame = tk.Frame(root, bg="#f0f0f0")
+        input_frame.grid(row=1, column=0, columnspan=2, padx=20, pady=10)
 
-        self.name_entry = tk.Entry(root)
-        self.type_entry = tk.Entry(root)
+        labels = ["Seadme nimi:", "Seadme tüüp:", "Seisund:", "Inventarinumber:"]
 
-        # Rippmenüü seisundi jaoks
+        for i, label_text in enumerate(labels):
+            label = tk.Label(
+                input_frame,
+                text=label_text,
+                font=("Arial", 11),
+                bg="#f0f0f0",
+                fg="#34495e"
+            )
+            label.grid(row=i, column=0, sticky="w", pady=8, padx=(0, 10))
+
+        self.name_entry = tk.Entry(input_frame, font=("Arial", 11), width=30)
+        self.type_entry = tk.Entry(input_frame, font=("Arial", 11), width=30)
+
+        # Rippmenüü kolme seisundi jaoks
         self.status_var = tk.StringVar()
         self.status_dropdown = ttk.Combobox(
-            root,
+            input_frame,
             textvariable=self.status_var,
             values=["available", "in_use", "broken"],
-            state="readonly"  # Ei luba käsitsi kirjutada
+            state="readonly",
+            font=("Arial", 11),
+            width=28
         )
-        self.status_dropdown.current(0)  # Vaikimisi esimene valik
+        self.status_dropdown.current(0)
 
-        self.inventory_number_entry = tk.Entry(root)
+        self.inventory_number_entry = tk.Entry(input_frame, font=("Arial", 11), width=30)
 
-        self.name_entry.grid(row=0, column=1)
-        self.type_entry.grid(row=1, column=1)
-        self.status_dropdown.grid(row=2, column=1)
-        self.inventory_number_entry.grid(row=3, column=1)
+        self.name_entry.grid(row=0, column=1, pady=8)
+        self.type_entry.grid(row=1, column=1, pady=8)
+        self.status_dropdown.grid(row=2, column=1, pady=8)
+        self.inventory_number_entry.grid(row=3, column=1, pady=8)
 
         # ---- Nupud ----
-        tk.Button(root, text="Lisa seade", command=self.add_device) \
-            .grid(row=4, column=0, columnspan=2, pady=5)
+        button_frame = tk.Frame(root, bg="#f0f0f0")
+        button_frame.grid(row=2, column=0, columnspan=2, pady=15)
 
-        tk.Button(root, text="Muuda valitud", command=self.edit_device) \
-            .grid(row=6, column=0, pady=5)
+        # Peamised nupud
+        add_btn = tk.Button(
+            button_frame,
+            text="➕ Lisa seade",
+            command=self.add_device,
+            bg="#27ae60",
+            fg="white",
+            font=("Arial", 10, "bold"),
+            width=20,
+            cursor="hand2",
+            relief="flat",
+            bd=0,
+            padx=10,
+            pady=8
+        )
+        add_btn.grid(row=0, column=0, columnspan=2, pady=5, padx=5)
 
-        tk.Button(root, text="Kustuta valitud", command=self.delete_device) \
-            .grid(row=6, column=1, pady=5)
+        edit_btn = tk.Button(
+            button_frame,
+            text="✏️ Muuda valitud",
+            command=self.edit_device,
+            bg="#3498db",
+            fg="white",
+            font=("Arial", 10, "bold"),
+            width=20,
+            cursor="hand2",
+            relief="flat",
+            bd=0,
+            padx=10,
+            pady=8
+        )
+        edit_btn.grid(row=1, column=0, pady=5, padx=5)
 
-        tk.Button(root, text="Salvesta CSV", command=self.save_csv) \
-            .grid(row=7, column=0)
+        delete_btn = tk.Button(
+            button_frame,
+            text="🗑️ Kustuta valitud",
+            command=self.delete_device,
+            bg="#e74c3c",
+            fg="white",
+            font=("Arial", 10, "bold"),
+            width=20,
+            cursor="hand2",
+            relief="flat",
+            bd=0,
+            padx=10,
+            pady=8
+        )
+        delete_btn.grid(row=1, column=1, pady=5, padx=5)
 
-        tk.Button(root, text="Lae CSV", command=self.load_csv) \
-            .grid(row=7, column=1)
+        # Failihalduse nupud
+        file_frame = tk.Frame(button_frame, bg="#f0f0f0")
+        file_frame.grid(row=2, column=0, columnspan=2, pady=10)
 
-        tk.Button(root, text="Salvesta JSON", command=self.save_json) \
-            .grid(row=8, column=0)
+        tk.Label(
+            file_frame,
+            text="Failihaldus:",
+            font=("Arial", 10, "bold"),
+            bg="#f0f0f0",
+            fg="#7f8c8d"
+        ).grid(row=0, column=0, columnspan=4, pady=(10, 5))
 
-        tk.Button(root, text="Lae JSON", command=self.load_json) \
-            .grid(row=8, column=1)
+        save_csv_btn = tk.Button(
+            file_frame,
+            text="💾 Salvesta CSV",
+            command=self.save_csv,
+            bg="#95a5a6",
+            fg="white",
+            font=("Arial", 9),
+            width=15,
+            cursor="hand2",
+            relief="flat",
+            bd=0,
+            pady=5
+        )
+        save_csv_btn.grid(row=1, column=0, padx=3)
+
+        load_csv_btn = tk.Button(
+            file_frame,
+            text="📂 Lae CSV",
+            command=self.load_csv,
+            bg="#7f8c8d",
+            fg="white",
+            font=("Arial", 9),
+            width=15,
+            cursor="hand2",
+            relief="flat",
+            bd=0,
+            pady=5
+        )
+        load_csv_btn.grid(row=1, column=1, padx=3)
+
+        save_json_btn = tk.Button(
+            file_frame,
+            text="💾 Salvesta JSON",
+            command=self.save_json,
+            bg="#95a5a6",
+            fg="white",
+            font=("Arial", 9),
+            width=15,
+            cursor="hand2",
+            relief="flat",
+            bd=0,
+            pady=5
+        )
+        save_json_btn.grid(row=1, column=2, padx=3)
+
+        load_json_btn = tk.Button(
+            file_frame,
+            text="📂 Lae JSON",
+            command=self.load_json,
+            bg="#7f8c8d",
+            fg="white",
+            font=("Arial", 9),
+            width=15,
+            cursor="hand2",
+            relief="flat",
+            bd=0,
+            pady=5
+        )
+        load_json_btn.grid(row=1, column=3, padx=3)
 
         # ---- Seadmete nimekiri ----
-        self.listbox = tk.Listbox(root, width=60)
-        self.listbox.grid(row=5, column=0, columnspan=2, pady=5)
+        list_label = tk.Label(
+            root,
+            text="Registreeritud seadmed:",
+            font=("Arial", 11, "bold"),
+            bg="#f0f0f0",
+            fg="#2c3e50"
+        )
+        list_label.grid(row=3, column=0, columnspan=2, pady=(15, 5))
+
+        # Listbox koos scrollbariga
+        list_frame = tk.Frame(root, bg="#f0f0f0")
+        list_frame.grid(row=4, column=0, columnspan=2, padx=20, pady=5)
+
+        scrollbar = tk.Scrollbar(list_frame)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        self.listbox = tk.Listbox(
+            list_frame,
+            width=70,
+            height=12,
+            font=("Courier", 10),
+            yscrollcommand=scrollbar.set,
+            selectmode=tk.SINGLE,
+            relief="solid",
+            bd=1
+        )
+        self.listbox.pack(side=tk.LEFT, fill=tk.BOTH)
+        scrollbar.config(command=self.listbox.yview)
+
         self.listbox.bind('<<ListboxSelect>>', self.on_select)
 
     def refresh_list(self):
