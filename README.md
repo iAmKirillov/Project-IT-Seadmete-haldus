@@ -24,7 +24,7 @@ Programmi käivitamine: ![img_2.png](img_2.png)
 
 
 # CSV/JSON salvestus
-Et faili CSV/JSON faile salvestada või avada, tegime eraldi kasutajaliidesele selgelt eristatavad nupud.
+Et faili CSV/JSON faile salvestada või avada, tehti kasutajaliidesele selgelt eristatavad nupud.
 ![img.png](img.png)
 
 
