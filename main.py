@@ -89,44 +89,34 @@ class DeviceApp:
         except ValueError:
             messagebox.showerror("Viga", "Vigane seadme seisund")
 
-    def delete_device(self):
-        """
-        Kustutab valitud seadme.
-        """
+    def delete_device(self): #Kustutab valitud seadme.
         selection = self.listbox.curselection()
         if not selection:
             return
 
         self.manager.delete_device(selection[0])
-        self.refresh_list()
 
-    def save_csv(self):
-        """
-        Salvestab seadmed CSV-faili.
-        """
-        CSVStorage.save("devices.csv", self.manager.devices)
-        messagebox.showinfo("Info", "Andmed salvestatud CSV-faili")
+    def save_csv(self): #Salvestab seadmed CSV-faili.
+            csv_storage = CSVStorage("devices.csv")  # ← LOO OBJEKT!
+            csv_storage.save(self.manager.get_devices_as_dicts())  # ← Kasuta meetodit!
+            messagebox.showinfo("Info", "Andmed salvestatud CSV-faili")
 
-    def load_csv(self):
-        """
-        Laeb seadmed CSV-failist.
-        """
-        self.manager.devices = CSVStorage.load("devices.csv")
-        self.refresh_list()
+    def load_csv(self): # Laeb seadmed CSV-failist.
+            csv_storage = CSVStorage("devices.csv")  # ← LOO OBJEKT!
+            devices_data = csv_storage.load()  # ← Lae andmed
+            self.manager.load_devices_from_dicts(devices_data)  # ← Tee objektideks
+            self.refresh_list()
 
-    def save_json(self):
-        """
-        Salvestab seadmed JSON-faili.
-        """
-        JSONStorage.save("devices.json", self.manager.devices)
-        messagebox.showinfo("Info", "Andmed salvestatud JSON-faili")
+    def save_json(self): #Salvestab seadmed JSON-faili.
+            json_storage = JSONStorage("devices.json")  # ← LOO OBJEKT!
+            json_storage.save(self.manager.get_devices_as_dicts())  # ← Kasuta meetodit!
+            messagebox.showinfo("Info", "Andmed salvestatud JSON-faili")
 
-    def load_json(self):
-        """
-        Laeb seadmed JSON-failist.
-        """
-        self.manager.devices = JSONStorage.load("devices.json")
-        self.refresh_list()
+    def load_json(self): #Laeb seadmed JSON-failist.
+            json_storage = JSONStorage("devices.json")  # ← LOO OBJEKT!
+            devices_data = json_storage.load()  # ← Lae andmed
+            self.manager.load_devices_from_dicts(devices_data)  # ← Tee objektideks
+            self.refresh_list()
 
 
 if __name__ == "__main__":
