@@ -1,5 +1,7 @@
 # IT-seadmete haldussüsteem KriSep
 
+Joosep Ainjärv, Kristjan Kallaste
+
 ## Tehisintellekti kasutamise märkus
 
 See programm on loodud **Claude Code** tehisintellekti abiga.

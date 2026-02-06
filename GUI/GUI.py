@@ -7,7 +7,7 @@ from Storage.CSVstorage import CSVStorage
 from Storage.JSONstorage import JSONStorage
 
 
-class DeviceApp: # GRAAFILINE AKEN
+class DeviceApp:  # GRAAFILINE AKEN
 
     def __init__(self, root):
         self.root = root
@@ -17,6 +17,11 @@ class DeviceApp: # GRAAFILINE AKEN
 
         self.manager = DeviceManager()
         self.selected_index = None  # Hoiab meeles valitud seadme indeksit
+
+        # Automaatse salvestuse seaded
+        self.auto_save_enabled = True
+        self.auto_save_json_file = "./devices.json"
+        self.auto_save_csv_file = "./devices.csv"
 
         # Pealkiri
         title_label = tk.Label(
@@ -67,7 +72,6 @@ class DeviceApp: # GRAAFILINE AKEN
         self.status_dropdown.grid(row=2, column=1, pady=8)
         self.inventory_number_entry.grid(row=3, column=1, pady=8)
         self.location_entry.grid(row=4, column=1, pady=8)
-
 
         # Nupud
         button_frame = tk.Frame(root, bg="#f0f0f0")
@@ -226,7 +230,21 @@ class DeviceApp: # GRAAFILINE AKEN
 
         self.listbox.bind('<<ListboxSelect>>', self.on_select)
 
-    def refresh_list(self): # Uuendab nimekirja
+
+    def auto_save(self):  # Automaatne salvestus (nii JSON kui CSV)
+        if self.auto_save_enabled:
+            try:
+                # Salvesta JSON
+                json_storage = JSONStorage(self.auto_save_json_file)
+                json_storage.save(self.manager.get_devices_as_dicts())
+
+                # Salvesta CSV
+                csv_storage = CSVStorage(self.auto_save_csv_file)
+                csv_storage.save(self.manager.get_devices_as_dicts())
+            except Exception:
+                pass
+
+    def refresh_list(self):  # Uuendab nimekirja
         self.listbox.delete(0, tk.END)
 
         for device in self.manager.devices:
@@ -241,7 +259,7 @@ class DeviceApp: # GRAAFILINE AKEN
         if self.selected_index is not None and self.selected_index < len(self.manager.devices):
             self.listbox.selection_set(self.selected_index)
 
-    def clear_entries(self): # Tühjendab väljad
+    def clear_entries(self):  # Tühjendab väljad
         self.name_entry.delete(0, tk.END)
         self.type_entry.delete(0, tk.END)
         self.status_var.set("available")
@@ -249,7 +267,7 @@ class DeviceApp: # GRAAFILINE AKEN
         self.location_entry.delete(0, tk.END)
         self.selected_index = None
 
-    def on_select(self, event): # Seadmel klikk toob andmed väljadesse
+    def on_select(self, event):  # Seadmel klikk toob andmed väljadesse
         selection = self.listbox.curselection()
         if not selection:
             return
@@ -271,7 +289,7 @@ class DeviceApp: # GRAAFILINE AKEN
         self.location_entry.delete(0, tk.END)
         self.location_entry.insert(0, device.location)
 
-    def add_device(self): #Seadme lisamine ja kontroll, kas kõik väljad on täidetud
+    def add_device(self):  # Seadme lisamine ja kontroll, kas kõik väljad on täidetud
         name = self.name_entry.get().strip()
         device_type = self.type_entry.get().strip()
         inventory_number = self.inventory_number_entry.get().strip()
@@ -280,7 +298,6 @@ class DeviceApp: # GRAAFILINE AKEN
         # Valideeri sisend
         if not name or not device_type or not inventory_number or not location:
             return
-
 
         # Lisa seade
         try:
@@ -294,10 +311,11 @@ class DeviceApp: # GRAAFILINE AKEN
             self.manager.add_device(device)
             self.refresh_list()
             self.clear_entries()
+            self.auto_save()  # Automaatne salvestus (JSON + CSV)
         except ValueError:
             pass
 
-    def edit_device(self): # Lisatud andmete muutmine ja kontroll, kas kõik väljad on täidetud
+    def edit_device(self):  # Lisatud andmete muutmine ja kontroll, kas kõik väljad on täidetud
         if self.selected_index is None:
             return
 
@@ -321,11 +339,12 @@ class DeviceApp: # GRAAFILINE AKEN
             device.location = location
 
             self.refresh_list()
-            # EI tühjenda välju, jätab valiku aktiivseks
+            self.auto_save()  # Automaatne salvestus (JSON + CSV)
+            # EI tühjenda välji, jätab valiku aktiivseks
         except (ValueError, IndexError):
             pass
 
-    def delete_device(self): #Valitud seadme kustutamine
+    def delete_device(self):  # Valitud seadme kustutamine
         if self.selected_index is None:
             return
 
@@ -334,37 +353,40 @@ class DeviceApp: # GRAAFILINE AKEN
             if self.manager.delete_device(device.name):
                 self.refresh_list()
                 self.clear_entries()
+                self.auto_save()  # Automaatne salvestus (JSON + CSV)
         except IndexError:
             pass
 
-    def save_csv(self): # CSV salvestus
+    def save_csv(self):  # CSV salvestus
         try:
             csv_storage = CSVStorage("./devices.csv")
             csv_storage.save(self.manager.get_devices_as_dicts())
         except Exception:
             pass
 
-    def load_csv(self): # CSV laadimine
+    def load_csv(self):  # CSV laadimine
         try:
             csv_storage = CSVStorage("./devices.csv")
             devices_data = csv_storage.load()
             self.manager.load_devices_from_dicts(devices_data)
             self.refresh_list()
+            self.auto_save()  # Salvestab automaatselt mõlemasse formaati
         except FileNotFoundError:
             pass
 
-    def save_json(self): # JSON salvestus
+    def save_json(self):  # JSON salvestus
         try:
             json_storage = JSONStorage("./devices.json")
             json_storage.save(self.manager.get_devices_as_dicts())
         except Exception:
             pass
 
-    def load_json(self): # JSON laadimine
+    def load_json(self):  # JSON laadimine
         try:
             json_storage = JSONStorage("./devices.json")
             devices_data = json_storage.load()
             self.manager.load_devices_from_dicts(devices_data)
             self.refresh_list()
+            self.auto_save()  # Salvestab automaatselt mõlemasse formaati
         except FileNotFoundError:
             pass
