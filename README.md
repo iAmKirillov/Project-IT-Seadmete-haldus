@@ -40,3 +40,4 @@ Programm võimaldab:
 - Laadida seadmed CSV-failist
 - Salvestada seadmed JSON-faili
 - Laadida seadmed JSON-failist
+
