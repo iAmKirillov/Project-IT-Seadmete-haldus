@@ -121,6 +121,26 @@ class DeviceApp:
         """
         Lisab uue seadme.
         """
+        # Kontrolli, et kõik väljad on täidetud
+        name = self.name_entry.get().strip()
+        device_type = self.type_entry.get().strip()
+        status = self.status_var.get()
+        inventory_number = self.inventory_number_entry.get().strip()
+
+        # Valideeri sisend
+        if not name:
+            messagebox.showerror("Viga", "Seadme nimi ei tohi olla tühi!")
+            return
+
+        if not device_type:
+            messagebox.showerror("Viga", "Seadme tüüp ei tohi olla tühi!")
+            return
+
+        if not inventory_number:
+            messagebox.showerror("Viga", "Inventarinumber ei tohi olla tühi!")
+            return
+
+        #Lisa seade
         try:
             device = Device(
                 self.name_entry.get(),
@@ -139,9 +159,28 @@ class DeviceApp:
         """
         Muudab valitud seadme andmeid.
         """
+        # Kontrolli, et kõik väljad on täidetud
+        name = self.name_entry.get().strip()
+        device_type = self.type_entry.get().strip()
+        status = self.status_var.get()
+        inventory_number = self.inventory_number_entry.get().strip()
         selection = self.listbox.curselection()
+
         if not selection:
             messagebox.showwarning("Hoiatus", "Palun vali seade, mida muuta")
+            return
+
+            # Valideeri sisend
+        if not name:
+            messagebox.showerror("Viga", "Seadme nimi ei tohi olla tühi!")
+            return
+
+        if not device_type:
+            messagebox.showerror("Viga", "Seadme tüüp ei tohi olla tühi!")
+            return
+
+        if not inventory_number:
+            messagebox.showerror("Viga", "Inventarinumber ei tohi olla tühi!")
             return
 
         try:
