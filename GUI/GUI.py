@@ -7,10 +7,7 @@ from Storage.CSVstorage import CSVStorage
 from Storage.JSONstorage import JSONStorage
 
 
-class DeviceApp:
-    """
-    Graafiline aken
-    """
+class DeviceApp: # GRAAFILINE AKEN
 
     def __init__(self, root):
         self.root = root
@@ -92,7 +89,7 @@ class DeviceApp:
 
         edit_btn = tk.Button(
             button_frame,
-            text="Muuda valitud",
+            text="Muuda",
             command=self.edit_device,
             bg="#3498db",
             fg="white",
@@ -108,7 +105,7 @@ class DeviceApp:
 
         delete_btn = tk.Button(
             button_frame,
-            text="Kustuta valitud",
+            text="Kustuta",
             command=self.delete_device,
             bg="#e74c3c",
             fg="white",
@@ -197,14 +194,14 @@ class DeviceApp:
         # Seadmete nimekiri
         list_label = tk.Label(
             root,
-            text="Registreeritud seadmed:",
+            text="Lisatud seadmed:",
             font=("Arial", 11, "bold"),
             bg="#f0f0f0",
             fg="#2c3e50"
         )
         list_label.grid(row=3, column=0, columnspan=2, pady=(15, 5))
 
-        # Kast lisatud seadmete jaoks
+        # Kast lisatud seadmete loeteluks
         list_frame = tk.Frame(root, bg="#f0f0f0")
         list_frame.grid(row=4, column=0, columnspan=2, padx=20, pady=5)
 
@@ -226,8 +223,7 @@ class DeviceApp:
 
         self.listbox.bind('<<ListboxSelect>>', self.on_select)
 
-    def refresh_list(self):
-        """Uuendab nimekirja ja taastab valiku"""
+    def refresh_list(self): # Uuendab nimekirja
         self.listbox.delete(0, tk.END)
 
         for device in self.manager.devices:
@@ -241,16 +237,14 @@ class DeviceApp:
         if self.selected_index is not None and self.selected_index < len(self.manager.devices):
             self.listbox.selection_set(self.selected_index)
 
-    def clear_entries(self):
-        """Tühjendab väljad ja tühistab valiku"""
+    def clear_entries(self): # Tühjendab väljad
         self.name_entry.delete(0, tk.END)
         self.type_entry.delete(0, tk.END)
         self.status_var.set("available")
         self.inventory_number_entry.delete(0, tk.END)
         self.selected_index = None
 
-    def on_select(self, event):
-        """Klikkides toob andmed väljadesse"""
+    def on_select(self, event): # Seadmel klikk toob andmed väljadesse
         selection = self.listbox.curselection()
         if not selection:
             return
@@ -269,8 +263,7 @@ class DeviceApp:
         self.inventory_number_entry.delete(0, tk.END)
         self.inventory_number_entry.insert(0, device.inventory_number)
 
-    def add_device(self):
-        """Seadme lisamine ja kontroll, kas kõik väljad on täidetud"""
+    def add_device(self): #Seadme lisamine ja kontroll, kas kõik väljad on täidetud
         name = self.name_entry.get().strip()
         device_type = self.type_entry.get().strip()
         inventory_number = self.inventory_number_entry.get().strip()
@@ -293,8 +286,7 @@ class DeviceApp:
         except ValueError:
             pass
 
-    def edit_device(self):
-        """Lisatud andmete muutmine ja kontroll, kas kõik väljad on täidetud"""
+    def edit_device(self): # Lisatud andmete muutmine ja kontroll, kas kõik väljad on täidetud
         if self.selected_index is None:
             return
 
@@ -320,8 +312,7 @@ class DeviceApp:
         except (ValueError, IndexError):
             pass
 
-    def delete_device(self):
-        """Valitud seadme kustutamine"""
+    def delete_device(self): #Valitud seadme kustutamine
         if self.selected_index is None:
             return
 
@@ -333,16 +324,14 @@ class DeviceApp:
         except IndexError:
             pass
 
-    def save_csv(self):
-        """CSV salvestus"""
+    def save_csv(self): # CSV salvestus
         try:
             csv_storage = CSVStorage("./devices.csv")
             csv_storage.save(self.manager.get_devices_as_dicts())
         except Exception:
             pass
 
-    def load_csv(self):
-        """CSV laadimine"""
+    def load_csv(self): # CSV laadimine
         try:
             csv_storage = CSVStorage("./devices.csv")
             devices_data = csv_storage.load()
@@ -351,16 +340,14 @@ class DeviceApp:
         except FileNotFoundError:
             pass
 
-    def save_json(self):
-        """JSON salvestus"""
+    def save_json(self): # JSON salvestus
         try:
             json_storage = JSONStorage("./devices.json")
             json_storage.save(self.manager.get_devices_as_dicts())
         except Exception:
             pass
 
-    def load_json(self):
-        """JSON laadimine"""
+    def load_json(self): # JSON laadimine
         try:
             json_storage = JSONStorage("./devices.json")
             devices_data = json_storage.load()
