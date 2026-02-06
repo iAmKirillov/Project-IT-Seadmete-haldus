@@ -52,7 +52,7 @@ class DeviceApp: # GRAAFILINE AKEN
         self.status_dropdown = ttk.Combobox(
             input_frame,
             textvariable=self.status_var,
-            values=["Available", "In use", "Broken"],
+            values=["available", "in_use", "broken"],
             state="readonly",
             font=("Arial", 11),
             width=28

@@ -4,7 +4,7 @@ IT-seadme klass.
 class Device:
 
     # Siin on nimekiri lubatud seisunditest
-    VALID_STATUSES = ['Available', 'In use', 'Broken']
+    VALID_STATUSES = ['available', 'in_use', 'broken']
 
     def __init__(self, name, device_type, status, inventory_number):
         self.name = name
