@@ -6,16 +6,12 @@ from Classes.DeviceManager import DeviceManager
 from Storage.CSVstorage import CSVStorage
 from Storage.JSONstorage import JSONStorage
 
-
 class DeviceApp:
     """
-    Graafiline kasutajaliides IT-seadmete haldamiseks.
+    Graafiline aken
     """
 
     def __init__(self, root):
-        """
-        Loob GUI akna ja elemendid.
-        """
         self.root = root
         self.root.title("IT-seadmete haldus")
 
@@ -124,7 +120,6 @@ class DeviceApp:
         # Kontrolli, et kõik väljad on täidetud
         name = self.name_entry.get().strip()
         device_type = self.type_entry.get().strip()
-        status = self.status_var.get()
         inventory_number = self.inventory_number_entry.get().strip()
 
         # Valideeri sisend
@@ -162,7 +157,6 @@ class DeviceApp:
         # Kontrolli, et kõik väljad on täidetud
         name = self.name_entry.get().strip()
         device_type = self.type_entry.get().strip()
-        status = self.status_var.get()
         inventory_number = self.inventory_number_entry.get().strip()
         selection = self.listbox.curselection()
 
