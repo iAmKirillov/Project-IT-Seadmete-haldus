@@ -23,16 +23,8 @@ class Device:
 
         self.status = status
 
-    def change_status(self, new_status):
-        """
-        Muudab seadme seisundit.
+    def change_status(self, new_status): #Muudab seadme seisundit.
 
-        Argumendid:
-            new_status (str): Uus seisund
-
-        Tõstab:
-            ValueError: Kui uus seisund ei ole lubatud
-        """
         if new_status not in self.VALID_STATUSES:
             raise ValueError(
                 f"Vigane seisund '{new_status}'. "
@@ -40,15 +32,7 @@ class Device:
             )
         self.status = new_status
 
-    def to_dict(self):
-        """
-               Teisendab seadme objekti sõnastikuks (dict).
-
-               See on vajalik, et salvestada andmed CSV või JSON faili.
-
-               Tagastab:
-                   dict: Sõnastik seadme andmetega
-               """
+    def to_dict(self): #Teisendab seadme objekti sõnastikuks (dict).
         return {
             'name': self.name,
             'device_type': self.device_type,
@@ -56,13 +40,7 @@ class Device:
             'inventory_number': self.inventory_number
         }
 
-    def __str__(self):
-        """
-        Tagastab seadme inimloetava kirjelduse.
-        See meetod käivitub, kui me teeme: print(device)
-        Tagastab:
-            str: Seadme kirjeldus
-        """
+    def __str__(self): #Tagastab seadme inimloetava kirjelduse.
         return (f"{self.name} ({self.device_type}) - "
                 f"Seisund: {self.status}, "
                 f"Inventarinumber: {self.inventory_number}")
