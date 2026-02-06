@@ -46,6 +46,7 @@ class DeviceManager:
                 name=data['name'],
                 device_type=data['device_type'],
                 status=data['status'],
-                inventory_number=data['inventory_number']
+                inventory_number=data['inventory_number'],
+                location=data['location']
             )
             self.devices.append(device)

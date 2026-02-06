@@ -32,7 +32,7 @@ class DeviceApp: # GRAAFILINE AKEN
         input_frame = tk.Frame(root, bg="#f0f0f0")
         input_frame.grid(row=1, column=0, columnspan=2, padx=20, pady=10)
 
-        labels = ["Seadme nimi:", "Seadme tüüp:", "Seisund:", "Inventarinumber:"]
+        labels = ["Seadme nimi:", "Seadme tüüp:", "Seisund:", "Inventarinumber:", "Asukoht:"]
 
         for i, label_text in enumerate(labels):
             label = tk.Label(
@@ -60,11 +60,14 @@ class DeviceApp: # GRAAFILINE AKEN
         self.status_dropdown.current(0)
 
         self.inventory_number_entry = tk.Entry(input_frame, font=("Arial", 11), width=30)
+        self.location_entry = tk.Entry(input_frame, font=("Arial", 11), width=30)
 
         self.name_entry.grid(row=0, column=1, pady=8)
         self.type_entry.grid(row=1, column=1, pady=8)
         self.status_dropdown.grid(row=2, column=1, pady=8)
         self.inventory_number_entry.grid(row=3, column=1, pady=8)
+        self.location_entry.grid(row=4, column=1, pady=8)
+
 
         # Nupud
         button_frame = tk.Frame(root, bg="#f0f0f0")
@@ -230,7 +233,8 @@ class DeviceApp: # GRAAFILINE AKEN
             self.listbox.insert(
                 tk.END,
                 f"{device.name} | {device.device_type} | "
-                f"{device.status} | {device.inventory_number}"
+                f"{device.status} | {device.inventory_number} | "
+                f"{device.location}"
             )
 
         # Taasta valik, kui on olemas
@@ -242,6 +246,7 @@ class DeviceApp: # GRAAFILINE AKEN
         self.type_entry.delete(0, tk.END)
         self.status_var.set("available")
         self.inventory_number_entry.delete(0, tk.END)
+        self.location_entry.delete(0, tk.END)
         self.selected_index = None
 
     def on_select(self, event): # Seadmel klikk toob andmed väljadesse
@@ -263,14 +268,19 @@ class DeviceApp: # GRAAFILINE AKEN
         self.inventory_number_entry.delete(0, tk.END)
         self.inventory_number_entry.insert(0, device.inventory_number)
 
+        self.location_entry.delete(0, tk.END)
+        self.location_entry.insert(0, device.location)
+
     def add_device(self): #Seadme lisamine ja kontroll, kas kõik väljad on täidetud
         name = self.name_entry.get().strip()
         device_type = self.type_entry.get().strip()
         inventory_number = self.inventory_number_entry.get().strip()
+        location = self.location_entry.get().strip()
 
         # Valideeri sisend
-        if not name or not device_type or not inventory_number:
+        if not name or not device_type or not inventory_number or not location:
             return
+
 
         # Lisa seade
         try:
@@ -278,7 +288,8 @@ class DeviceApp: # GRAAFILINE AKEN
                 name,
                 device_type,
                 self.status_var.get(),
-                inventory_number
+                inventory_number,
+                location
             )
             self.manager.add_device(device)
             self.refresh_list()
@@ -293,9 +304,10 @@ class DeviceApp: # GRAAFILINE AKEN
         name = self.name_entry.get().strip()
         device_type = self.type_entry.get().strip()
         inventory_number = self.inventory_number_entry.get().strip()
+        location = self.location_entry.get().strip()
 
         # Valideeri sisend
-        if not name or not device_type or not inventory_number:
+        if not name or not device_type or not inventory_number or not location:
             return
 
         try:
@@ -306,6 +318,7 @@ class DeviceApp: # GRAAFILINE AKEN
             device.device_type = device_type
             device.status = self.status_var.get()
             device.inventory_number = inventory_number
+            device.location = location
 
             self.refresh_list()
             # EI tühjenda välju, jätab valiku aktiivseks

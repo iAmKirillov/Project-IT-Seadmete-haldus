@@ -16,7 +16,7 @@ class CSVStorage: #Klass andmete salvestamiseks ja laadimiseks CSV formaadis.
         if not devices_data:
             with open(self.filename, 'w', encoding='utf-8', newline='') as file:
                 writer = csv.writer(file, delimiter=';')
-                writer.writerow(['name', 'device_type', 'status', 'inventory_number'])
+                writer.writerow(['name', 'device_type', 'status', 'inventory_number', 'location'])
             return
 
         # Avame faili kirjutamiseks

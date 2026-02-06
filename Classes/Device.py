@@ -6,10 +6,11 @@ class Device:
     # Siin on nimekiri lubatud seisunditest
     VALID_STATUSES = ['available', 'in_use', 'broken']
 
-    def __init__(self, name, device_type, status, inventory_number):
+    def __init__(self, name, device_type, status, inventory_number, location):
         self.name = name
         self.device_type = device_type
         self.inventory_number = inventory_number
+        self.location = location
 
         # Kontrollime, et seisund oleks lubatud
         if status not in self.VALID_STATUSES:
@@ -31,10 +32,12 @@ class Device:
             'name': self.name,
             'device_type': self.device_type,
             'status': self.status,
-            'inventory_number': self.inventory_number
+            'inventory_number': self.inventory_number,
+            'location': self.location
         }
 
     def __str__(self): #Tagastab seadme inimloetava kirjelduse.
         return (f"{self.name} ({self.device_type}) - "
                 f"Seisund: {self.status}, "
-                f"Inventarinumber: {self.inventory_number}")
+                f"Inventarinumber: {self.inventory_number}, "
+                f"Asukoht: {self.location}")
