@@ -4,11 +4,6 @@ Seadmete haldamise klass.
 from Classes.Device import Device
 
 class DeviceManager:
-    """
-    Klass seadmete haldamiseks.
-    Hoiab kõiki seadmeid ja võimaldab neid hallata.
-    """
-
     def __init__(self): #Loob uue seadmehalduri tühja seadmete nimekirjaga.
         self.devices = []
 

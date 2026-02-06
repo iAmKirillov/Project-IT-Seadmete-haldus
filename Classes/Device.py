@@ -7,12 +7,6 @@ class Device:
     VALID_STATUSES = ['available', 'in_use', 'broken']
 
     def __init__(self, name, device_type, status, inventory_number):
-        """
-            name (str): Seadme nimi
-            device_type (str): Seadme tüüp
-            status (str): Seadme seisund
-            inventory_number (str): Inventarinumber
-        """
         self.name = name
         self.device_type = device_type
         self.inventory_number = inventory_number
